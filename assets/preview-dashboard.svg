@@ -1,91 +1,185 @@
-<svg width="720" height="420" viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" font-family="'Cascadia Code','Fira Code','Courier New',monospace">
-  <rect width="720" height="420" rx="10" fill="#0a0a12"/>
-  <!-- header -->
-  <rect width="720" height="48" rx="10" fill="#0f0f1e"/>
-  <rect y="32" width="720" height="16" fill="#0f0f1e"/>
-  <text x="20" y="30" fill="#7b8cde" font-size="16" font-weight="bold">⚡ FLUX</text>
-  <text x="76" y="30" fill="#555" font-size="12">autonomous yield optimizer</text>
-  <text x="540" y="30" fill="#27c93f" font-size="11">● RUNNING</text>
-  <text x="614" y="30" fill="#555" font-size="11">PAPER MODE</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="540" viewBox="0 0 900 540">
+  <defs>
+    <style>text { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace; }</style>
+  </defs>
 
-  <!-- stat cards -->
-  <rect x="16" y="64" width="160" height="72" rx="6" fill="#111120" stroke="#1e1e3a" stroke-width="1"/>
-  <text x="28" y="84" fill="#555" font-size="10">TOTAL DEPLOYED</text>
-  <text x="28" y="114" fill="#e0e0e0" font-size="26" font-weight="bold">$10,000</text>
-  <text x="28" y="128" fill="#555" font-size="10">across 3 protocols</text>
+  <!-- Background -->
+  <rect width="900" height="540" fill="#060810"/>
 
-  <rect x="188" y="64" width="160" height="72" rx="6" fill="#111120" stroke="#1e1e3a" stroke-width="1"/>
-  <text x="200" y="84" fill="#555" font-size="10">BLENDED APY</text>
-  <text x="200" y="114" fill="#7b8cde" font-size="26" font-weight="bold">8.14%</text>
-  <text x="200" y="128" fill="#555" font-size="10">↑ 1.2% since last cycle</text>
+  <!-- Title bar -->
+  <rect width="900" height="42" fill="#0d1020"/>
+  <rect width="900" height="1" y="42" fill="#1a1f35"/>
+  <circle cx="18" cy="21" r="6" fill="#ff5f57"/>
+  <circle cx="36" cy="21" r="6" fill="#febc2e"/>
+  <circle cx="54" cy="21" r="6" fill="#28c840"/>
+  <text x="450" y="26" fill="#38bdf8" font-size="13" font-weight="bold" text-anchor="middle">◎ Flux  —  Yield Optimizer</text>
+  <text x="820" y="26" fill="#22c55e" font-size="11" text-anchor="middle">● RUNNING</text>
+  <text x="820" y="38" fill="#374151" font-size="10" text-anchor="middle">cycle #14  ·  1h</text>
 
-  <rect x="360" y="64" width="160" height="72" rx="6" fill="#111120" stroke="#1e1e3a" stroke-width="1"/>
-  <text x="372" y="84" fill="#555" font-size="10">EARNED (30d)</text>
-  <text x="372" y="114" fill="#27c93f" font-size="26" font-weight="bold">$67.83</text>
-  <text x="372" y="128" fill="#555" font-size="10">annualized $813.60</text>
+  <!-- ─── LEFT: Rate matrix ────────────────────────────────────── -->
+  <rect x="12" y="54" width="310" height="370" rx="4" fill="#0d1020" stroke="#1a1f35" stroke-width="1"/>
+  <text x="22" y="72" fill="#374151" font-size="10" letter-spacing="1">RATE MATRIX  ·  RISK-ADJUSTED</text>
 
-  <rect x="532" y="64" width="172" height="72" rx="6" fill="#111120" stroke="#1e1e3a" stroke-width="1"/>
-  <text x="544" y="84" fill="#555" font-size="10">NEXT REBALANCE</text>
-  <text x="544" y="114" fill="#e0e0e0" font-size="26" font-weight="bold">47m</text>
-  <text x="544" y="128" fill="#555" font-size="10">cycle interval: 1h</text>
+  <!-- Headers -->
+  <text x="22" y="88" fill="#1f2937" font-size="9">Asset / Protocol</text>
+  <text x="192" y="88" fill="#1f2937" font-size="9">Raw APY</text>
+  <text x="252" y="88" fill="#1f2937" font-size="9">Util</text>
+  <text x="300" y="88" fill="#1f2937" font-size="9" text-anchor="end">Adj APY</text>
+  <rect x="12" y="91" width="310" height="1" fill="#1a1f35"/>
 
-  <!-- rate comparison table -->
-  <text x="20" y="162" fill="#444" font-size="10">LIVE RATE COMPARISON</text>
-  <rect x="16" y="168" width="688" height="1" fill="#1a1a2e"/>
+  <!-- USDC rows -->
+  <text x="22" y="105" fill="#6b7280" font-size="9" font-weight="bold">USDC</text>
+  <text x="36" y="117" fill="#e5e7eb" font-size="9">Kamino</text>
+  <text x="192" y="117" fill="#9ca3af" font-size="9">9.41%</text>
+  <text x="252" y="117" fill="#22c55e" font-size="9">64%</text>
+  <text x="300" y="117" fill="#38bdf8" font-size="9.5" text-anchor="end">9.41% ★</text>
+  <text x="36" y="131" fill="#e5e7eb" font-size="9">MarginFi</text>
+  <text x="192" y="131" fill="#9ca3af" font-size="9">8.87%</text>
+  <text x="252" y="131" fill="#22c55e" font-size="9">71%</text>
+  <text x="300" y="131" fill="#9ca3af" font-size="9" text-anchor="end">8.75%</text>
+  <text x="36" y="145" fill="#e5e7eb" font-size="9">Solend</text>
+  <text x="192" y="145" fill="#9ca3af" font-size="9">11.20%</text>
+  <text x="252" y="145" fill="#ef4444" font-size="9">91% ⚠</text>
+  <text x="300" y="145" fill="#6b7280" font-size="9" text-anchor="end">7.28% ✗</text>
 
-  <!-- table header -->
-  <text x="28" y="186" fill="#444" font-size="10">PROTOCOL</text>
-  <text x="140" y="186" fill="#444" font-size="10">ASSET</text>
-  <text x="210" y="186" fill="#444" font-size="10">SUPPLY APY</text>
-  <text x="310" y="186" fill="#444" font-size="10">UTILIZATION</text>
-  <text x="420" y="186" fill="#444" font-size="10">LIQUIDITY</text>
-  <text x="540" y="186" fill="#444" font-size="10">ALLOCATED</text>
-  <text x="640" y="186" fill="#444" font-size="10">STATUS</text>
+  <rect x="22" y="150" width="290" height="1" fill="#1a1f35"/>
 
-  <!-- rows -->
-  <rect x="16" y="192" width="688" height="30" rx="3" fill="#0d1a0d"/>
-  <text x="28" y="212" fill="#7b8cde" font-size="11">Kamino</text>
-  <text x="140" y="212" fill="#e0e0e0" font-size="11">USDC</text>
-  <text x="210" y="212" fill="#27c93f" font-size="11">8.20%</text>
-  <text x="310" y="212" fill="#aaa" font-size="11">75.0%</text>
-  <text x="420" y="212" fill="#aaa" font-size="11">$13.0M</text>
-  <text x="540" y="212" fill="#27c93f" font-size="11">$5,000</text>
-  <text x="640" y="212" fill="#27c93f" font-size="10">● active</text>
+  <!-- SOL rows -->
+  <text x="22" y="163" fill="#6b7280" font-size="9" font-weight="bold">SOL</text>
+  <text x="36" y="175" fill="#e5e7eb" font-size="9">Kamino</text>
+  <text x="192" y="175" fill="#9ca3af" font-size="9">7.12%</text>
+  <text x="252" y="175" fill="#22c55e" font-size="9">58%</text>
+  <text x="300" y="175" fill="#38bdf8" font-size="9.5" text-anchor="end">7.12% ★</text>
+  <text x="36" y="189" fill="#e5e7eb" font-size="9">MarginFi</text>
+  <text x="192" y="189" fill="#9ca3af" font-size="9">6.94%</text>
+  <text x="252" y="189" fill="#22c55e" font-size="9">67%</text>
+  <text x="300" y="189" fill="#9ca3af" font-size="9" text-anchor="end">6.80%</text>
+  <text x="36" y="203" fill="#e5e7eb" font-size="9">Solend</text>
+  <text x="192" y="203" fill="#9ca3af" font-size="9">6.50%</text>
+  <text x="252" y="203" fill="#fbbf24" font-size="9">83%</text>
+  <text x="300" y="203" fill="#9ca3af" font-size="9" text-anchor="end">5.72%</text>
 
-  <rect x="16" y="226" width="688" height="30" rx="3" fill="#111120"/>
-  <text x="28" y="246" fill="#7b8cde" font-size="11">Kamino</text>
-  <text x="140" y="246" fill="#e0e0e0" font-size="11">SOL</text>
-  <text x="210" y="246" fill="#27c93f" font-size="11">6.50%</text>
-  <text x="310" y="246" fill="#aaa" font-size="11">70.0%</text>
-  <text x="420" y="246" fill="#aaa" font-size="11">$30.0M</text>
-  <text x="540" y="246" fill="#27c93f" font-size="11">$3,000</text>
-  <text x="640" y="246" fill="#27c93f" font-size="10">● active</text>
+  <rect x="22" y="208" width="290" height="1" fill="#1a1f35"/>
 
-  <rect x="16" y="260" width="688" height="30" rx="3" fill="#0d1a0d"/>
-  <text x="28" y="280" fill="#7b8cde" font-size="11">MarginFi</text>
-  <text x="140" y="280" fill="#e0e0e0" font-size="11">USDC</text>
-  <text x="210" y="280" fill="#aaa" font-size="11">7.10%</text>
-  <text x="310" y="280" fill="#aaa" font-size="11">68.0%</text>
-  <text x="420" y="280" fill="#aaa" font-size="11">$10.0M</text>
-  <text x="540" y="280" fill="#27c93f" font-size="11">$2,000</text>
-  <text x="640" y="280" fill="#27c93f" font-size="10">● active</text>
+  <!-- USDT rows -->
+  <text x="22" y="221" fill="#6b7280" font-size="9" font-weight="bold">USDT</text>
+  <text x="36" y="233" fill="#e5e7eb" font-size="9">MarginFi</text>
+  <text x="192" y="233" fill="#9ca3af" font-size="9">8.14%</text>
+  <text x="252" y="233" fill="#22c55e" font-size="9">62%</text>
+  <text x="300" y="233" fill="#38bdf8" font-size="9.5" text-anchor="end">8.14% ★</text>
+  <text x="36" y="247" fill="#e5e7eb" font-size="9">Kamino</text>
+  <text x="192" y="247" fill="#9ca3af" font-size="9">7.88%</text>
+  <text x="252" y="247" fill="#22c55e" font-size="9">69%</text>
+  <text x="300" y="247" fill="#9ca3af" font-size="9" text-anchor="end">7.70%</text>
 
-  <rect x="16" y="294" width="688" height="30" rx="3" fill="#111120"/>
-  <text x="28" y="314" fill="#555" font-size="11">Solend</text>
-  <text x="140" y="314" fill="#aaa" font-size="11">USDC</text>
-  <text x="210" y="314" fill="#555" font-size="11">5.90%</text>
-  <text x="310" y="314" fill="#aaa" font-size="11">60.0%</text>
-  <text x="420" y="314" fill="#aaa" font-size="11">$8.0M</text>
-  <text x="540" y="314" fill="#555" font-size="11">—</text>
-  <text x="640" y="314" fill="#555" font-size="10">skipped</text>
+  <rect x="22" y="252" width="290" height="1" fill="#1a1f35"/>
 
-  <!-- last rebalance -->
-  <rect x="16" y="338" width="688" height="1" fill="#1a1a2e"/>
-  <text x="20" y="358" fill="#444" font-size="10">LAST REBALANCE — shifted $2,000 from MarginFi SOL → Kamino USDC (+1.7% APY improvement)</text>
-  <text x="20" y="375" fill="#444" font-size="10">Agent reasoning: Kamino USDC utilization stable at 75%, Kamino SOL marginally lower risk-adjusted return vs stablecoin at current funding</text>
+  <!-- JitoSOL -->
+  <text x="22" y="265" fill="#6b7280" font-size="9" font-weight="bold">JitoSOL</text>
+  <text x="36" y="277" fill="#e5e7eb" font-size="9">Kamino</text>
+  <text x="192" y="277" fill="#9ca3af" font-size="9">8.60%</text>
+  <text x="252" y="277" fill="#fbbf24" font-size="9">78%</text>
+  <text x="300" y="277" fill="#38bdf8" font-size="9.5" text-anchor="end">8.18% ★</text>
 
-  <!-- footer -->
-  <rect x="0" y="396" width="720" height="24" rx="4" fill="#0a0a12"/>
-  <text x="20" y="412" fill="#333" font-size="10">paper mode — simulated positions only</text>
-  <text x="680" y="412" fill="#333" font-size="10">v0.1.0</text>
+  <rect x="12" y="284" width="310" height="1" fill="#1a1f35"/>
+  <text x="22" y="298" fill="#374151" font-size="9">★ = best risk-adjusted per asset  ·  ✗ = filtered (util > 90%)</text>
+  <text x="22" y="311" fill="#374151" font-size="9">Risk adj: APY × (1 − max(0, util−0.7)/0.3 × 0.40)</text>
+
+  <!-- Rebalance economic check -->
+  <rect x="22" y="320" width="290" height="52" rx="3" fill="#060810" stroke="#1a1f35" stroke-width="1"/>
+  <text x="32" y="336" fill="#374151" font-size="9">Rebalance economic check</text>
+  <text x="32" y="350" fill="#6b7280" font-size="9">USDT MarginFi → Kamino USDC</text>
+  <text x="32" y="362" fill="#6b7280" font-size="9">Δ APY +1.27%  ·  $3,200 capital  ·  1h cycle</text>
+  <text x="300" y="362" fill="#22c55e" font-size="9" text-anchor="end">+$0.046 &gt; $0.02 ✓</text>
+
+  <!-- ─── CENTER: Agent eval + allocation plan ──────────────────── -->
+  <rect x="332" y="54" width="270" height="370" rx="4" fill="#0d1020" stroke="#1a1f35" stroke-width="1"/>
+  <text x="342" y="72" fill="#374151" font-size="10" letter-spacing="1">AGENT  ·  CYCLE #14</text>
+
+  <rect x="342" y="80" width="250" height="30" rx="3" fill="#060810" stroke="#1a1f35" stroke-width="1"/>
+  <text x="352" y="92" fill="#a78bfa" font-size="9.5">→ get_rate_matrix()</text>
+  <text x="352" y="104" fill="#6b7280" font-size="9">↳ 11 rates across 3 protocols returned</text>
+
+  <rect x="342" y="117" width="250" height="30" rx="3" fill="#060810" stroke="#1a1f35" stroke-width="1"/>
+  <text x="352" y="129" fill="#a78bfa" font-size="9.5">→ get_current_positions()</text>
+  <text x="352" y="141" fill="#6b7280" font-size="9">↳ 3 open: USDT-MarginFi, SOL-Kamino, USDC-Kamino</text>
+
+  <rect x="342" y="154" width="250" height="30" rx="3" fill="#060810" stroke="#1a1f35" stroke-width="1"/>
+  <text x="352" y="166" fill="#a78bfa" font-size="9.5">→ get_protocol_health("kamino")</text>
+  <text x="352" y="178" fill="#6b7280" font-size="9">↳ USDC util 64% — healthy, JitoSOL util 78% — monitor</text>
+
+  <rect x="342" y="191" width="250" height="44" rx="3" fill="#1a0d2a" stroke="#a78bfa" stroke-width="1"/>
+  <text x="352" y="204" fill="#a78bfa" font-size="9.5">→ submit_allocation_plan</text>
+  <text x="352" y="217" fill="#e5e7eb" font-size="9">rebalanceNeeded: true</text>
+  <text x="352" y="229" fill="#e5e7eb" font-size="9">USDT MarginFi → Kamino USDC (+1.27% adj APY)</text>
+
+  <!-- New plan -->
+  <rect x="332" y="244" width="270" height="1" fill="#1a1f35"/>
+  <text x="342" y="260" fill="#374151" font-size="10" letter-spacing="1">NEW ALLOCATION PLAN</text>
+
+  <rect x="342" y="267" width="250" height="34" rx="3" fill="#060810" stroke="#38bdf8" stroke-width="1"/>
+  <text x="352" y="280" fill="#38bdf8" font-size="9.5">OPEN  Kamino USDC</text>
+  <text x="576" y="280" fill="#38bdf8" font-size="9" text-anchor="end">$3,200</text>
+  <text x="352" y="292" fill="#6b7280" font-size="9">9.41% adj APY  ·  64% util  ·  $4.1M available</text>
+
+  <rect x="342" y="308" width="250" height="34" rx="3" fill="#060810" stroke="#1a1f35" stroke-width="1"/>
+  <text x="352" y="321" fill="#e5e7eb" font-size="9.5">HOLD  Kamino SOL</text>
+  <text x="576" y="321" fill="#9ca3af" font-size="9" text-anchor="end">$4,100</text>
+  <text x="352" y="333" fill="#6b7280" font-size="9">7.12% adj APY  ·  already optimal</text>
+
+  <rect x="342" y="349" width="250" height="34" rx="3" fill="#060810" stroke="#1a1f35" stroke-width="1"/>
+  <text x="352" y="362" fill="#e5e7eb" font-size="9.5">HOLD  Kamino USDC (existing)</text>
+  <text x="576" y="362" fill="#9ca3af" font-size="9" text-anchor="end">$2,700</text>
+  <text x="352" y="374" fill="#6b7280" font-size="9">9.41% adj APY  ·  within threshold</text>
+
+  <rect x="342" y="390" width="250" height="22" rx="3" fill="#060810" stroke="#1a1f35" stroke-width="1"/>
+  <text x="352" y="404" fill="#374151" font-size="9">Close: USDT MarginFi  ·  gas $0.02  ·  net gain $0.046/h</text>
+
+  <!-- ─── RIGHT: Portfolio stats ────────────────────────────────── -->
+  <rect x="612" y="54" width="276" height="192" rx="4" fill="#0d1020" stroke="#1a1f35" stroke-width="1"/>
+  <text x="622" y="72" fill="#374151" font-size="10" letter-spacing="1">PORTFOLIO</text>
+
+  <text x="622" y="90" fill="#374151" font-size="9">Total deployed</text>
+  <text x="876" y="90" fill="#e5e7eb" font-size="9.5" text-anchor="end">$10,000</text>
+
+  <text x="622" y="108" fill="#374151" font-size="9">Blended APY (raw)</text>
+  <text x="876" y="108" fill="#e5e7eb" font-size="9" text-anchor="end">8.41%</text>
+
+  <text x="622" y="126" fill="#374151" font-size="9">Blended APY (risk-adj)</text>
+  <text x="876" y="126" fill="#38bdf8" font-size="9.5" text-anchor="end">8.27%</text>
+
+  <text x="622" y="144" fill="#374151" font-size="9">Total earned (14 cycles)</text>
+  <text x="876" y="144" fill="#22c55e" font-size="9.5" text-anchor="end">+$97.41</text>
+
+  <text x="622" y="162" fill="#374151" font-size="9">Yield method</text>
+  <text x="876" y="162" fill="#9ca3af" font-size="9" text-anchor="end">compound</text>
+
+  <text x="622" y="180" fill="#374151" font-size="9">Rebalances (14 cycles)</text>
+  <text x="876" y="180" fill="#e5e7eb" font-size="9" text-anchor="end">3</text>
+
+  <text x="622" y="198" fill="#374151" font-size="9">Rebalances skipped (gas)</text>
+  <text x="876" y="198" fill="#6b7280" font-size="9" text-anchor="end">5</text>
+
+  <text x="622" y="216" fill="#374151" font-size="9">Util warnings (Kamino)</text>
+  <text x="876" y="216" fill="#fbbf24" font-size="9" text-anchor="end">1 (JitoSOL 78%)</text>
+  <text x="622" y="234" fill="#374151" font-size="9">Util filtered (Solend)</text>
+  <text x="876" y="234" fill="#ef4444" font-size="9" text-anchor="end">USDC >90%</text>
+
+  <!-- Cycle log -->
+  <rect x="612" y="256" width="276" height="168" rx="4" fill="#0d1020" stroke="#1a1f35" stroke-width="1"/>
+  <text x="622" y="274" fill="#374151" font-size="10" letter-spacing="1">CYCLE LOG</text>
+
+  <text x="622" y="290" fill="#38bdf8" font-size="9.5">14:00  cycle #14  REBALANCE  USDT→USDC</text>
+  <text x="622" y="303" fill="#374151" font-size="9">↳ adj APY +1.27%  ·  $0.046/h gain  ·  gas $0.02</text>
+  <text x="622" y="318" fill="#9ca3af" font-size="9.5">13:00  cycle #13  HOLD  all positions within 2%</text>
+  <text x="622" y="331" fill="#374151" font-size="9">↳ skip check: USDT→USDC +0.8%  ·  $0.026/h &lt; threshold</text>
+  <text x="622" y="346" fill="#9ca3af" font-size="9.5">12:00  cycle #12  HOLD  no economic rebalance</text>
+  <text x="622" y="361" fill="#9ca3af" font-size="9.5">11:00  cycle #11  REBALANCE  SOL MarginFi→Kamino</text>
+  <text x="622" y="374" fill="#374151" font-size="9">↳ adj APY +2.14%  ·  Solend USDC filtered (91% util)</text>
+  <text x="622" y="389" fill="#9ca3af" font-size="9.5">10:00  cycle #10  HOLD  optimal allocation</text>
+  <text x="622" y="404" fill="#374151" font-size="9">↳ skipped 2 economic checks below $0.02 gas threshold</text>
+
+  <!-- Paper mode badge -->
+  <rect x="750" y="426" width="112" height="16" rx="3" fill="#0d1a20"/>
+  <text x="806" y="438" fill="#38bdf8" font-size="9.5" text-anchor="middle">PAPER MODE</text>
 </svg>
