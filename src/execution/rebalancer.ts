@@ -7,6 +7,28 @@ const logger = createLogger("rebalancer");
 const positions = new Map<string, Position>();
 let totalEarned = 0;
 
+// Estimate whether an APY improvement is worth the gas cost of rebalancing.
+// A rebalance requires at least 2 txs (close + open) at ~$0.01 each = $0.02 minimum.
+// Over a 1-hour cycle, the improvement must earn more than gas cost.
+// improvementApy: fractional APY gain (e.g. 0.02 = 2%). capitalUsd: amount being moved.
+export function isRebalanceEconomic(
+  improvementApy: number,
+  capitalUsd: number,
+  gasEstimateUsd = 0.02,
+  periodHours = 1,
+): boolean {
+  const hourlyGain = capitalUsd * improvementApy / 8760 * periodHours;
+  if (hourlyGain <= gasEstimateUsd) {
+    logger.debug("Rebalance not economic", {
+      hourlyGain: hourlyGain.toFixed(4),
+      gasEstimateUsd,
+      improvementApy: `${(improvementApy * 100).toFixed(2)}%`,
+    });
+    return false;
+  }
+  return true;
+}
+
 export function buildRebalanceActions(
   plan: AllocationPlan,
   current: Position[],
