@@ -60,7 +60,9 @@ export function getRateMatrix(rates: ProtocolRate[]): Map<string, ProtocolRate[]
   for (const rate of rates) {
     const existing = matrix.get(rate.asset) ?? [];
     existing.push(rate);
-    matrix.set(rate.asset, existing.sort((a, b) => b.supplyApy - a.supplyApy));
+    // Sort by risk-adjusted APY so the agent sees the best risk-adjusted option first
+    // in each asset row, not just the highest raw rate.
+    matrix.set(rate.asset, existing.sort((a, b) => riskAdjustedApy(b) - riskAdjustedApy(a)));
   }
 
   return matrix;
