@@ -118,6 +118,39 @@ MAX_PROTOCOL_ALLOCATION_PCT=0.50
 
 ---
 
+## Technical Spec
+
+### Risk-Adjusted APY
+
+Raw APY comparisons mislead — a 12% market at 95% utilization is less valuable than 9% at 60% because exit is unreliable at high utilization. Flux applies a penalty:
+
+```
+riskAdjustedApy = supplyApy * (1 - max(0, u - 0.70) / 0.30 * 0.40)
+```
+
+No penalty below 70% utilization. At 100% utilization, effective APY is 40% lower than stated. `getBestRatePerAsset` ranks by risk-adjusted APY and filters out markets above `MAX_UTILIZATION_RATE` (default 90%).
+
+### Gas-Economic Rebalance Gate
+
+Before shifting capital, `isRebalanceEconomic` checks whether the expected APY gain over one cycle actually covers the gas cost:
+
+```typescript
+const hourlyGain = capitalUsd * improvementApy / 8760 * periodHours;
+// Only rebalance if hourlyGain > $0.02 (2 Solana txs)
+```
+
+A 2% APY improvement on $500 earns $0.0011/hour — rebalancing every hour would cost 18× more in gas than it earns. At $10,000 capital, the same improvement earns $0.023/hour — economic.
+
+### Compound Yield Accrual
+
+`accrueYield` uses compound interest: `P * ((1 + r)^t - 1)`. The prior simple interest model (`P * r * t`) underestimates accumulated yield by ~2% APY at 30% APR over a week — meaningful at larger capital amounts.
+
+### Utilization Spike Detection
+
+Both Kamino and Solend adapters log a warning when utilization exceeds 85% AND available liquidity is less than 5% of total supply. This pattern precedes withdrawal freezes in lending protocols — the interest rate model has forced rates up to attract new deposits but hasn't yet resolved the liquidity crunch.
+
+---
+
 ## License
 
 MIT
