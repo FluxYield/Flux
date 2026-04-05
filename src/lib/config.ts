@@ -11,6 +11,12 @@ const schema = z.object({
   MIN_APY_THRESHOLD: z.coerce.number().default(0.05),   // 5% minimum to bother
   REBALANCE_THRESHOLD: z.coerce.number().default(0.02), // rebalance if APY diff > 2%
   MAX_PROTOCOL_ALLOCATION_PCT: z.coerce.number().default(0.50), // 50% max per protocol
+  // Protocols with utilization above this threshold carry withdrawal risk — a liquidity
+  // crunch can prevent withdrawals for hours. Filtered before scoring.
+  MAX_UTILIZATION_RATE: z.coerce.number().default(0.90),
+  // Minimum liquidity available in the market. If less than this is available to withdraw,
+  // the position is effectively illiquid regardless of the stated APY.
+  MIN_AVAILABLE_LIQUIDITY_USD: z.coerce.number().default(10_000),
   ENABLE_KAMINO: z.coerce.boolean().default(true),
   ENABLE_MARGINFI: z.coerce.boolean().default(true),
   ENABLE_SOLEND: z.coerce.boolean().default(true),
