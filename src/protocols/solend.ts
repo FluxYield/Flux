@@ -25,16 +25,29 @@ export async function fetchSolendRates(): Promise<ProtocolRate[]> {
 
     return (data.results ?? []).map((r) => {
       const price = parseFloat(r.assetPriceUSD);
+      // Solend's API returns string decimals — parse carefully.
+      // availableAmount is token units, not USD — multiply by price.
+      const availableLiquidityUsd = parseFloat(r.availableAmount) * price;
+      const utilizationRate = parseFloat(r.utilizationRatio);
+
+      if (utilizationRate > 0.88) {
+        logger.warn("Solend reserve near utilization cap", {
+          asset: r.symbol,
+          utilization: `${(utilizationRate * 100).toFixed(1)}%`,
+          availableLiquidityUsd: availableLiquidityUsd.toFixed(0),
+        });
+      }
+
       return {
         protocol: "solend" as const,
         asset: r.symbol,
         mint: r.mintAddress,
         supplyApy: parseFloat(r.supplyInterestAPY),
         borrowApy: parseFloat(r.borrowInterestAPY),
-        utilizationRate: parseFloat(r.utilizationRatio),
+        utilizationRate,
         totalSupplyUsd: parseFloat(r.totalDeposit) * price,
         totalBorrowUsd: parseFloat(r.totalBorrow) * price,
-        availableLiquidityUsd: parseFloat(r.availableAmount) * price,
+        availableLiquidityUsd,
         updatedAt: Date.now(),
       };
     });
