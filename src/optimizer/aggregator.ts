@@ -26,15 +26,27 @@ export async function fetchAllRates(): Promise<ProtocolRate[]> {
   return rates;
 }
 
+// Risk-adjusted APY: penalises markets with high utilization.
+// At 95% utilization, withdrawal is unreliable — treat that market as if the APY
+// is 40% lower. Formula: riskAdjustedApy = supplyApy * (1 - max(0, u - 0.7) / 0.3)
+// where u is utilizationRate. Below 70% utilization: no penalty.
+export function riskAdjustedApy(rate: ProtocolRate): number {
+  if (rate.utilizationRate <= 0.70) return rate.supplyApy;
+  const utilizationPenalty = (rate.utilizationRate - 0.70) / 0.30; // 0→1 between 70–100%
+  return rate.supplyApy * (1 - utilizationPenalty * 0.40);
+}
+
 export function getBestRatePerAsset(rates: ProtocolRate[]): Map<string, ProtocolRate> {
   const best = new Map<string, ProtocolRate>();
 
   for (const rate of rates) {
     if (rate.supplyApy < config.MIN_APY_THRESHOLD) continue;
-    if (rate.availableLiquidityUsd < 10_000) continue;
+    if (rate.availableLiquidityUsd < config.MIN_AVAILABLE_LIQUIDITY_USD) continue;
+    if (rate.utilizationRate > config.MAX_UTILIZATION_RATE) continue;
 
     const existing = best.get(rate.asset);
-    if (!existing || rate.supplyApy > existing.supplyApy) {
+    // Compare by risk-adjusted APY, not raw APY
+    if (!existing || riskAdjustedApy(rate) > riskAdjustedApy(existing)) {
       best.set(rate.asset, rate);
     }
   }
