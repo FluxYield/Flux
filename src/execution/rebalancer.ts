@@ -93,8 +93,11 @@ export function executePaperRebalance(plan: AllocationPlan): Position[] {
 
 export function accrueYield(hoursSinceLastCycle: number) {
   for (const pos of positions.values()) {
+    // Compound interest: P * ((1 + r)^t - 1) where r is hourly rate and t is hours.
+    // Simple interest (prior model: P * r * t) underestimates by ~0.5% APY at 8% APR
+    // and by ~2% APY at 30% APR — meaningful at larger capital amounts.
     const hourlyRate = pos.currentApy / 8760;
-    const earned = pos.amountUsd * hourlyRate * hoursSinceLastCycle;
+    const earned = pos.amountUsd * (Math.pow(1 + hourlyRate, hoursSinceLastCycle) - 1);
     pos.earnedUsd += earned;
     totalEarned += earned;
   }
