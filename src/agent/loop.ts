@@ -1,8 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { config } from "../lib/config.js";
 import { createLogger } from "../lib/logger.js";
-import type { ProtocolRate, Position, AllocationPlan } from "../lib/types.js";
+import type { Protocol, ProtocolRate, Position, AllocationPlan } from "../lib/types.js";
 import { FLUX_SYSTEM } from "./prompts.js";
+import { getRateMatrix, riskAdjustedApy } from "../optimizer/aggregator.js";
+import { buildRebalanceActions, isRebalanceEconomic } from "../execution/rebalancer.js";
 
 const logger = createLogger("agent");
 const client = new Anthropic({ apiKey: config.ANTHROPIC_API_KEY });
@@ -91,12 +93,12 @@ export async function planAllocation(
       switch (block.name) {
         case "get_rate_matrix": {
           const matrix: Record<string, Array<{ protocol: string; apy: number; utilization: number }>> = {};
-          for (const r of rates) {
-            if (!matrix[r.asset]) matrix[r.asset] = [];
-            matrix[r.asset].push({ protocol: r.protocol, apy: r.supplyApy, utilization: r.utilizationRate });
-          }
-          for (const asset in matrix) {
-            matrix[asset].sort((a, b) => b.apy - a.apy);
+          for (const [asset, assetRates] of getRateMatrix(rates)) {
+            matrix[asset] = assetRates.map((rate) => ({
+              protocol: rate.protocol,
+              apy: riskAdjustedApy(rate),
+              utilization: rate.utilizationRate,
+            }));
           }
           result = matrix;
           break;
@@ -126,8 +128,12 @@ export async function planAllocation(
         }
 
         case "submit_allocation_plan":
-          plan = block.input as AllocationPlan;
-          result = { accepted: true };
+          try {
+            plan = validateAllocationPlan(block.input as AllocationPlan, rates, positions);
+            result = { accepted: true, normalized: plan };
+          } catch (error) {
+            result = { accepted: false, error: String(error) };
+          }
           break;
 
         default:
@@ -142,4 +148,89 @@ export async function planAllocation(
   }
 
   return plan;
+}
+
+function validateAllocationPlan(
+  candidate: AllocationPlan,
+  rates: ProtocolRate[],
+  positions: Position[]
+): AllocationPlan {
+  const enabledProtocols = new Set<Protocol>();
+  if (config.ENABLE_KAMINO) enabledProtocols.add("kamino");
+  if (config.ENABLE_MARGINFI) enabledProtocols.add("marginfi");
+  if (config.ENABLE_SOLEND) enabledProtocols.add("solend");
+  if (config.ENABLE_DRIFT) enabledProtocols.add("drift");
+
+  const allocations = candidate.allocations.map((allocation) => {
+    if (!enabledProtocols.has(allocation.protocol)) {
+      throw new Error(`Protocol ${allocation.protocol} is not enabled`);
+    }
+
+    const rate = rates.find(
+      (item) =>
+        item.protocol === allocation.protocol &&
+        item.asset === allocation.asset &&
+        item.mint === allocation.mint
+    );
+    if (!rate) {
+      throw new Error(`No live rate found for ${allocation.protocol}/${allocation.asset}`);
+    }
+
+    return {
+      ...allocation,
+      expectedApy: riskAdjustedApy(rate),
+      amountUsd: Number(allocation.amountUsd),
+    };
+  });
+
+  const totalDeployed = Number(
+    allocations.reduce((sum, allocation) => sum + allocation.amountUsd, 0).toFixed(2)
+  );
+  if (totalDeployed > config.TOTAL_CAPITAL_USD) {
+    throw new Error(`Plan deploys $${totalDeployed}, above capital limit $${config.TOTAL_CAPITAL_USD}`);
+  }
+
+  const protocolTotals = new Map<Protocol, number>();
+  for (const allocation of allocations) {
+    protocolTotals.set(
+      allocation.protocol,
+      (protocolTotals.get(allocation.protocol) ?? 0) + allocation.amountUsd
+    );
+  }
+
+  for (const [protocol, amount] of protocolTotals) {
+    if (totalDeployed > 0 && amount / totalDeployed > config.MAX_PROTOCOL_ALLOCATION_PCT) {
+      throw new Error(`Protocol ${protocol} exceeds max allocation cap`);
+    }
+  }
+
+  const expectedBlendedApy =
+    totalDeployed > 0
+      ? allocations.reduce((sum, allocation) => sum + allocation.expectedApy * (allocation.amountUsd / totalDeployed), 0)
+      : 0;
+
+  const normalized: AllocationPlan = {
+    allocations,
+    totalDeployed,
+    expectedBlendedApy,
+    rebalanceNeeded: false,
+  };
+
+  const actions = buildRebalanceActions(normalized, positions);
+  const capitalMoved = actions.reduce((sum, action) => sum + action.amountUsd, 0);
+  const currentDeployed = positions.reduce((sum, position) => sum + position.amountUsd, 0);
+  const currentBlendedApy =
+    currentDeployed > 0
+      ? positions.reduce((sum, position) => sum + position.currentApy * (position.amountUsd / currentDeployed), 0)
+      : 0;
+  const improvementApy = Math.max(expectedBlendedApy - currentBlendedApy, 0);
+  const hasMaterialDiff = actions.length > 0 || positions.length === 0;
+
+  normalized.rebalanceNeeded =
+    hasMaterialDiff &&
+    (positions.length === 0 ||
+      (improvementApy >= config.REBALANCE_THRESHOLD &&
+        isRebalanceEconomic(improvementApy, Math.max(capitalMoved, totalDeployed))));
+
+  return normalized;
 }
