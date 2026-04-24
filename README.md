@@ -28,13 +28,17 @@ Paper mode on by default. One env var flip for live capital.
 
 ## Dashboard
 
-![Flux Dashboard](assets/preview-dashboard.svg)
+<img src="assets/preview-dashboard.png" alt="Flux live optimization dashboard" width="100%" />
+
+Live optimizer dashboard for Flux: protocol rates, utilization risk, liquidity depth, current allocations, paper-mode execution status, and rebalance candidates in one operating view.
 
 ---
 
-## Terminal Output
+## Allocation Logic
 
-![Flux Terminal](assets/preview-terminal.svg)
+<img src="assets/preview-allocation.png" alt="Flux allocation logic" width="100%" />
+
+How Flux allocates capital: fetch rates, build a rate matrix, filter unsafe venues, compare risk-adjusted yield, and only rebalance when the expected improvement clears the configured threshold.
 
 ---
 
